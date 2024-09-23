@@ -1,0 +1,63 @@
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY,
+    username TEXT NOT NULL,
+    email TEXT NOT NULL,
+    password TEXT NOT NULL,
+    role TEXT NOT NULL,  -- 'user' or 'admin'
+    otp TEXT,  -- one-time password for 2FA
+    salt TEXT NOT NULL,  -- salt for password hashing
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+CREATE TABLE IF NOT EXISTS admin (
+    id INTEGER PRIMARY KEY,
+    username TEXT NOT NULL,
+    email TEXT NOT NULL,
+    password TEXT NOT NULL,
+    salt TEXT NOT NULL,  -- salt for password hashing
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+CREATE TABLE IF NOT EXISTS adoption_forms (
+    id INTEGER PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    pet_id INTEGER NOT NULL,
+    adoption_date DATE NOT NULL,
+    status TEXT NOT NULL,  -- 'pending', 'approved', or 'rejected'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users (id),
+    FOREIGN KEY (pet_id) REFERENCES pets (id)
+);
+
+
+
+CREATE TABLE IF NOT EXISTS pets (
+    id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
+    species TEXT NOT NULL,
+    breed TEXT,
+    age INTEGER,
+    description TEXT,
+    image_url TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+
+
+import hashlib
+import os
+
+def hash_password(password, salt):
+    hashed_password = hashlib.pbkdf2_hmac('sha256', password.encode('utf-8'), salt, 100000)
+    return hashed_password.hex()
+
+def verify_password(stored_password, provided_password, salt):
+    hashed_provided_password = hash_password(provided_password, salt)
+    return hashed_provided_password == stored_password

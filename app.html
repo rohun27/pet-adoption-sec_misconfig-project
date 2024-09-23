@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pet Finder</title>
+    <style>
+      /* Reset default styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Basic styles for the layout */
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #031c51;
+        line-height: 1.6;
+      }
+
+      header,
+      footer {
+        background-color: #0f3c5a;
+        color: #f3eeee;
+        text-align: center;
+        padding: 1em 0;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .header-logo {
+        max-width: 50px;
+        height: auto;
+        margin-right: 10px;
+      }
+
+      header h1 {
+        margin: 0;
+      }
+
+      nav ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+      }
+
+      nav ul li {
+        margin-right: 1em;
+      }
+
+      nav ul li a {
+        color: #f4eded;
+        text-decoration: none;
+      }
+
+      section {
+        padding: 2em 0;
+        background-color: white;
+        margin: 1em auto;
+        max-width: 1200px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        border-bottom: 2px solid #07153b;
+        padding-bottom: 0.5em;
+        color: #080939;
+        margin-bottom: 1em;
+      }
+
+      .row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1em;
+      }
+
+      .animal-profile {
+        border: 1px solid #ddd;
+        padding: 1em;
+        text-align: center;
+        background-color: #f4ede0;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        width: calc(50% - 1em); /* Two pets per row */
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .animal-profile img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 5px;
+        transition: filter 0.3s ease;
+      }
+
+      .animal-profile:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      .animal-profile:hover img {
+        filter: brightness(110%);
+      }
+
+      .animal-profile h3 {
+        color: #333;
+      }
+
+      .animal-profile p {
+        color: #666;
+      }
+
+      .social-media a {
+        margin: 0 5px;
+        text-decoration: none;
+        color: #0c62bd;
+      }
+
+      .social-media a:hover {
+        text-decoration: underline;
+      }
+
+      button {
+        background-color: #0964c5;
+        color: #f0f1f5;
+        border: none;
+        padding: 0.5em 1em;
+        cursor: pointer;
+        border-radius: 5px;
+        margin-top: 0.5em;
+      }
+
+      button:hover {
+        background-color: #0056b3;
+      }
+
+      a {
+        color: #007bff;
+        cursor: pointer;
+      }
+
+      a:hover {
+        text-decoration: underline;
+      }
+
+      footer .social-media a {
+        margin: 0 10px;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 768px) {
+        .animal-profile {
+          width: 100%;
+          margin-right: 0;
+        }
+      }
+
+      /* Styles for the adoption form */
+      .container {
+        max-width: 600px;
+        margin: 2em auto;
+        background-color: white;
+        padding: 2em;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        display: none;
+      }
+
+      .container h2 {
+        color: #031c51;
+        margin-bottom: 1em;
+      }
+
+      .container label {
+        display: block;
+        margin-bottom: 0.5em;
+        color: #031c51;
+      }
+
+      .container input,
+      .container textarea,
+      .container select {
+        width: 100%;
+        padding: 0.5em;
+        margin-bottom: 1em;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+
+      .container button {
+        background-color: #0964c5;
+        color: white;
+        border: none;
+        padding: 0.75em 1.5em;
+        cursor: pointer;
+        border-radius: 5px;
+      }
+
+      .container button:hover {
+        background-color: #0056b3;
+      }
+
+      .success-message {
+        display: none;
+        background-color: #d4edda;
+        color: #155724;
+        padding: 1em;
+        border: 1px solid #c3e6cb;
+        border-radius: 5px;
+        margin-top: 1em;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">
+        <img
+          src="https://th.bing.com/th/id/OIP.xvadJWl7lviCOwbp_NXk-AHaHa?rs=1&pid=ImgDetMain"
+          alt="Pet Finder Logo"
+          class="header-logo"
+        />
+        <h1>Pet Finder</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#search">Search Pets</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section id="search">
+      <h2>Find Your Perfect Pet</h2>
+      <form id="search-form">
+        <label for="species">Species:</label>
+        <select id="species" name="species">
+          <option value="dog">Dog</option>
+          <option value="cat">Cat</option>
+          <option value="rabbit">Rabbit</option>
+        </select>
+        <label for="breed">Breed:</label>
+        <input type="text" id="breed" name="breed" />
+        <label for="age">Age:</label>
+        <select id="age" name="age">
+          <option value="any">Any</option>
+          <option value="puppy">Puppy/Kitten</option>
+          <option value="young">Young</option>
+          <option value="adult">Adult</option>
+          <option value="senior">Senior</option>
+        </select>
+        <label for="location">Location:</label>
+        <input type="text" id="location" name="location" />
+        <button type="submit">Search</button>
+      </form>
+    </section>
+
+    <section id="profiles">
+      <h2>Available Pets</h2>
+
+      <!-- Pet profiles will be dynamically generated here -->
+      <div id="pet-row" class="row"></div>
+    </section>
+
+    <section class="container" id="adoption-form-container">
+      <h2>Adopt a Pet</h2>
+      <form id="adoption-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required />
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required />
+        <label for="pet">Choose a Pet:</label>
+        <select id="pet" name="pet" required>
+          <option value="">Select a pet...</option>
+        </select>
+        <label for="reason">Reason for Adopting:</label>
+        <textarea id="reason" name="reason" rows="4" required></textarea>
+        <button type="submit">Submit</button>
+      </form>
+      <div class="success-message" id="success-message">
+        <p>Thank you! Your adoption request has been submitted.</p>
+      </div>
+    </section>
+
+    <footer>
+      <div class="social-media">
+        <a href="https://x.com/" target="_blank">Twitter</a>
+        <a href="https://www.facebook.com/" target="_blank">Facebook</a>
+        <a href="https://www.instagram.com/" target="_blank">Instagram</a>
+      </div>
+      <p>&copy; 2024 Pet Finder. All rights reserved.</p>
+    </footer>
+    <script>
+      // Sample data of pets
+      var pets = [
+        {
+          name: "Buddy",
+          species: "Dog",
+          breed: "Labrador",
+          sex: "Male",
+          age: "2 years",
+          location: "Port Louis, Mauritius",
+          image:
+            "https://i.pinimg.com/originals/6a/57/2e/6a572e27cf9e161b095a44ca51babc23.jpg",
+        },
+        {
+          name: "Whiskers",
+          species: "Cat",
+          breed: "Siamese",
+          sex: "Female",
+          age: "1 year",
+          location: "Curepipe, Mauritius",
+          image:
+            "https://i.pinimg.com/564x/71/80/3e/71803e34e14f28f773c886c534a684a0.jpg",
+        },
+        {
+          name: "Max",
+          species: "Dog",
+          breed: "Beagle",
+          sex: "Male",
+          age: "1.5 years",
+          location: "Vacoas-Phoenix, Mauritius",
+          image:
+            "https://www.akc.org/wp-content/uploads/2021/01/Beagle-puppy-standing-in-the-grass-1.jpeg",
+        },
+        {
+          name: "Luna",
+          species: "Cat",
+          breed: "Maine Coon",
+          sex: "Female",
+          age: "4 years",
+          location: "Mahebourg, Mauritius",
+          image:
+            "https://i.pinimg.com/originals/84/0f/3c/840f3cecfa4844d8315fc2b44fa27743.jpg",
+        },
+        {
+          name: "Bella",
+          species: "Dog",
+          breed: "Poodle",
+          sex: "Female",
+          age: "4 years",
+          location: "Vacoas, Mauritius",
+          image:
+            "https://i.pinimg.com/564x/5d/28/5f/5d285fb3c935c9c861c98d76dd70e7a8.jpg",
+        },
+        {
+          name: "Thumper",
+          species: "Rabbit",
+          breed: "Netherland Dwarf",
+          sex: "Male",
+          age: "1 year",
+          location: "Quatre Bornes, Mauritius",
+          image:
+            "https://i.pinimg.com/474x/1d/13/2e/1d132eca100a101688c7fb4e355ef82f--rabbits-bunnies.jpg",
+        },
+      ];
+
+      // Function to populate the "Choose a Pet" dropdown
+      function populatePetDropdown() {
+        var petSelect = document.getElementById("pet");
+        pets.forEach(function (pet) {
+          var option = document.createElement("option");
+          option.value = pet.name;
+          option.text = pet.name;
+          petSelect.appendChild(option);
+        });
+      }
+
+      // Function to populate pets based on search criteria
+      function populatePets(species, breed, age, location) {
+        var filteredPets = pets.filter(function (pet) {
+          return (
+            (species === "any" || pet.species.toLowerCase() === species) &&
+            (breed.trim() === "" ||
+              pet.breed.toLowerCase().includes(breed.toLowerCase())) &&
+            (age === "any" ||
+              (age === "puppy" &&
+                (pet.age === "Puppy/Kitten" || pet.age === "Young")) ||
+              (age === "young" &&
+                (pet.age === "Puppy/Kitten" || pet.age === "Young")) ||
+              (age === "adult" &&
+                (pet.age === "Adult" || pet.age === "Senior")) ||
+              (age === "senior" && pet.age === "Senior")) &&
+            (location.trim() === "" ||
+              pet.location.toLowerCase().includes(location.toLowerCase()))
+          );
+        });
+
+        var petRow = document.getElementById("pet-row");
+        petRow.innerHTML = "";
+
+        if (filteredPets.length > 0) {
+          filteredPets.forEach(function (pet) {
+            var profileHTML = `
+            <div class="animal-profile">
+              <img src="${pet.image}" alt="${pet.name}" />
+              <h3>${pet.name}</h3>
+              <p>Species: ${pet.species}</p>
+              <p>Breed: ${pet.breed}</p>
+              <p>Sex: ${pet.sex}</p>
+              <p>Age: ${pet.age}</p>
+              <p>Location: ${pet.location}</p>
+              <a onclick="showAdoptionForm('${pet.name}')">Adopt Me</a>
+            </div>
+          `;
+            petRow.insertAdjacentHTML("beforeend", profileHTML);
+          });
+        } else {
+          petRow.innerHTML = "<p>No pets found.</p>";
+        }
+      }
+
+      // Initial population of pets and dropdown
+      window.onload = function () {
+        populatePets("any", "", "any", "");
+        populatePetDropdown();
+      };
+
+      // Search form submission handler
+      document
+        .getElementById("search-form")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+          var species = document.getElementById("species").value.toLowerCase();
+          var breed = document
+            .getElementById("breed")
+            .value.trim()
+            .toLowerCase();
+          var age = document.getElementById("age").value.toLowerCase();
+          var location = document
+            .getElementById("location")
+            .value.trim()
+            .toLowerCase();
+          populatePets(species, breed, age, location);
+        });
+
+      // Function to show adoption form for a specific pet
+      function showAdoptionForm(petName) {
+        document.getElementById("adoption-form-container").style.display =
+          "block";
+        document.getElementById("pet").value = petName;
+        window.scrollTo(
+          0,
+          document.getElementById("adoption-form-container").offsetTop
+        );
+      }
+
+      // Adoption form submission handler (simulate success)
+      document
+        .getElementById("adoption-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          var formData = new FormData(document.getElementById("adoption-form"));
+          formData.append("pet-name", document.getElementById("pet").value);
+
+          // Simulate form submission success
+          document.getElementById("success-message").style.display = "block";
+          setTimeout(function () {
+            document.getElementById("success-message").style.display = "none";
+            document.getElementById("adoption-form-container").style.display =
+              "none";
+            window.scrollTo(0, 0);
+          }, 2000); // Adjust the time as needed
+        });
+    </script>
+  </body>
+</html>
